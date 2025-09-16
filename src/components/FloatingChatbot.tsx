@@ -199,8 +199,11 @@ export const FloatingChatbot = () => {
   const generateBotResponse = (userMessage: string): string => {
     const message = userMessage.toLowerCase();
     
+    // Handle Hinglish queries
+    const hinglishMessage = message.replace(/kya/g, 'क्या').replace(/hai/g, 'है').replace(/kaise/g, 'कैसे').replace(/farming/g, 'खेती').replace(/crop/g, 'फसल');
+    
     // Location-based soil information
-    const locationInfo = getLocationInfo(message);
+    const locationInfo = getLocationInfo(message) || getLocationInfo(hinglishMessage);
     if (locationInfo) {
       return `📍 **${locationInfo.district}, ${locationInfo.state} की मिट्टी की जानकारी:**
 
@@ -214,7 +217,7 @@ export const FloatingChatbot = () => {
     }
 
     // Soil-related queries
-    if (message.includes('मिट्टी') || message.includes('soil') || message.includes('मिट्टी की जांच')) {
+    if (message.includes('मिट्टी') || message.includes('soil') || message.includes('मिट्टी की जांच') || hinglishMessage.includes('mitti') || message.includes('mitti')) {
       return `🌱 **मिट्टी की जानकारी:**
 
 मिट्टी के मुख्य प्रकार:

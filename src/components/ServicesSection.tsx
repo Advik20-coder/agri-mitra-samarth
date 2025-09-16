@@ -14,9 +14,11 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { LocationDialog } from "@/components/LocationDialog";
+import { useNavigate } from "react-router-dom";
 
 export const ServicesSection = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [showLocationDialog, setShowLocationDialog] = useState(false);
 
   const services = [
@@ -70,10 +72,21 @@ export const ServicesSection = () => {
         setShowLocationDialog(true);
         break;
       case 'chat':
-        // Scroll to chatbot or open it
+        navigate('/ai-advisor');
+        break;
+      case 'weather':
+        navigate('/weather-alerts');
+        break;
+      case 'upload':
+        navigate('/pest-detection');
+        break;
+      case 'market':
+        navigate('/market-prices');
+        break;
+      case 'planning':
+        navigate('/crop-planning');
         break;
       default:
-        // Handle other actions
         break;
     }
   };
