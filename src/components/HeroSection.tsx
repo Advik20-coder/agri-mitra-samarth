@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight, Play, Zap, Shield, Globe } from "lucide-react";
+import { useState } from "react";
+import { GuidancePopup } from "@/components/GuidancePopup";
 
 export const HeroSection = () => {
   const { t } = useLanguage();
+  const [showGuidancePopup, setShowGuidancePopup] = useState(false);
 
   return (
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-hero">
@@ -58,6 +61,7 @@ export const HeroSection = () => {
             <Button 
               size="lg" 
               className="bg-white text-primary hover:bg-white/90 shadow-lg text-lg px-8 py-6 rounded-full font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105"
+              onClick={() => setShowGuidancePopup(true)}
             >
               {t.getStarted}
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -101,6 +105,11 @@ export const HeroSection = () => {
           <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
+
+      <GuidancePopup 
+        open={showGuidancePopup}
+        onOpenChange={setShowGuidancePopup}
+      />
     </section>
   );
 };

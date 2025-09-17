@@ -198,6 +198,17 @@ export const FloatingChatbot = () => {
 
   const generateBotResponse = (userMessage: string): string => {
     const message = userMessage.toLowerCase();
+
+    // Government schemes queries
+    if (message.includes('yojna') || message.includes('scheme') || message.includes('सरकारी') || message.includes('govt')) {
+      if (message.includes('punjab') || message.includes('पंजाब')) {
+        return "Punjab Government Schemes:\n• Agriculture Infrastructure Fund (AIF)\n• Punjab e-Mandi/e-NAM\n• Soil Health Card Scheme\n• Agriculture House Assistance";
+      }
+      if (message.includes('bihar') || message.includes('बिहार')) {
+        return "Bihar Government Schemes:\n• Irrigation Subsidy (₹140 crore)\n• Free Soybean Seeds (₹4,000/acre)\n• Vegetable Development (75% subsidy)\n• Polyhouse Subsidy (50%)";
+      }
+      return "Government schemes available for Punjab, UP, Bihar, and MP. Please specify your state.";
+    }
     
     // Handle Hinglish queries
     const hinglishMessage = message.replace(/kya/g, 'क्या').replace(/hai/g, 'है').replace(/kaise/g, 'कैसे').replace(/farming/g, 'खेती').replace(/crop/g, 'फसल');

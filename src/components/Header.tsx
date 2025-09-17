@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Sprout, Menu, X } from "lucide-react";
+import farmersImage from "@/assets/farmers-working.jpg";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,8 +17,15 @@ export const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 bg-card/80 backdrop-blur-md border-b border-border/60">
-      <div className="container mx-auto px-4 py-4">
+    <header className="fixed top-0 left-0 right-0 z-40 bg-card/80 backdrop-blur-md border-b border-border/60 relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10">
+        <img 
+          src={farmersImage} 
+          alt="Farmers working in fields" 
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="container mx-auto px-4 py-4 relative z-10">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">

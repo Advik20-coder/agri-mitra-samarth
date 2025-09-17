@@ -43,12 +43,26 @@ export interface Translation {
   loading: string;
   error: string;
   success: string;
+  getLocationInfo: string;
+  startChat: string;
   
   // Location
   enterLocation: string;
   selectState: string;
   selectDistrict: string;
-  getLocationInfo: string;
+  
+  // Services Section
+  servicesDescription: string;
+  smartFeaturesTitle: string;
+  voiceEnabledAI: string;
+  voiceEnabledAIDesc: string;
+  imageRecognition: string;
+  imageRecognitionDesc: string;
+  locationBasedRec: string;
+  locationBasedRecDesc: string;
+  
+  // Guidance Popup
+  guidanceVideoTitle: string;
 }
 
 export const translations: Record<string, Translation> = {
@@ -97,12 +111,26 @@ export const translations: Record<string, Translation> = {
     loading: "Loading...",
     error: "Error occurred",
     success: "Success",
+    getLocationInfo: "Get Location Info",
+    startChat: "Start Chat",
     
     // Location
     enterLocation: "Enter Your Location",
     selectState: "Select State",
     selectDistrict: "Select District",
-    getLocationInfo: "Get Location Info",
+    
+    // Services Section
+    servicesDescription: "Comprehensive agricultural solutions powered by AI to help farmers make informed decisions",
+    smartFeaturesTitle: "Smart Features for Modern Farming",
+    voiceEnabledAI: "Voice-Enabled AI Assistant",
+    voiceEnabledAIDesc: "Interact naturally with our AI in your preferred language using voice commands",
+    imageRecognition: "Image Recognition",
+    imageRecognitionDesc: "Upload photos of crops to instantly identify pests, diseases, and nutrients",
+    locationBasedRec: "Location-Based Recommendations",
+    locationBasedRecDesc: "Get personalized advice based on your local soil type and climate conditions",
+    
+    // Guidance Popup
+    guidanceVideoTitle: "There will be a guidance video of website",
   },
 
   hi: {
@@ -150,12 +178,26 @@ export const translations: Record<string, Translation> = {
     loading: "लोड हो रहा है...",
     error: "त्रुटि हुई",
     success: "सफलता",
+    getLocationInfo: "स्थान की जानकारी प्राप्त करें",
+    startChat: "चैट शुरू करें",
     
     // Location
     enterLocation: "अपना स्थान दर्ज करें",
     selectState: "राज्य चुनें",
     selectDistrict: "जिला चुनें",
-    getLocationInfo: "स्थान की जानकारी प्राप्त करें",
+    
+    // Services Section
+    servicesDescription: "एआई द्वारा संचालित व्यापक कृषि समाधान जो किसानों को सूचित निर्णय लेने में मदद करते हैं",
+    smartFeaturesTitle: "आधुनिक खेती के लिए स्मार्ट सुविधाएं",
+    voiceEnabledAI: "वॉयस-सक्षम एआई सहायक",
+    voiceEnabledAIDesc: "वॉयस कमांड का उपयोग करके अपनी पसंदीदा भाषा में हमारे एआई के साथ प्राकृतिक रूप से बातचीत करें",
+    imageRecognition: "छवि पहचान",
+    imageRecognitionDesc: "कीटों, बीमारियों और पोषक तत्वों की तुरंत पहचान के लिए फसलों की तस्वीरें अपलोड करें",
+    locationBasedRec: "स्थान-आधारित सिफारिशें",
+    locationBasedRecDesc: "अपनी स्थानीय मिट्टी के प्रकार और जलवायु की स्थिति के आधार पर व्यक्तिगत सलाह प्राप्त करें",
+    
+    // Guidance Popup
+    guidanceVideoTitle: "वेबसाइट का मार्गदर्शन वीडियो होगा",
   },
 
   pa: {
@@ -203,11 +245,25 @@ export const translations: Record<string, Translation> = {
     loading: "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ...",
     error: "ਗਲਤੀ ਹੋਈ",
     success: "ਸਫਲਤਾ",
+    getLocationInfo: "ਟਿਕਾਣੇ ਦੀ ਜਾਣਕਾਰੀ ਪ੍ਰਾਪਤ ਕਰੋ",
+    startChat: "ਗੱਲਬਾਤ ਸ਼ੁਰੂ ਕਰੋ",
     
     // Location
     enterLocation: "ਆਪਣਾ ਟਿਕਾਣਾ ਦਰਜ ਕਰੋ",
     selectState: "ਰਾਜ ਚੁਣੋ",
     selectDistrict: "ਜ਼ਿਲ੍ਹਾ ਚੁਣੋ",
-    getLocationInfo: "ਟਿਕਾਣੇ ਦੀ ਜਾਣਕਾਰੀ ਪ੍ਰਾਪਤ ਕਰੋ",
+    
+    // Services Section
+    servicesDescription: "ਏਆਈ ਦੁਆਰਾ ਸੰਚਾਲਿਤ ਵਿਆਪਕ ਖੇਤੀਬਾੜੀ ਹੱਲ ਜੋ ਕਿਸਾਨਾਂ ਨੂੰ ਸੂਚਿਤ ਫੈਸਲੇ ਲੈਣ ਵਿੱਚ ਮਦਦ ਕਰਦੇ ਹਨ",
+    smartFeaturesTitle: "ਆਧੁਨਿਕ ਖੇਤੀ ਲਈ ਸਮਾਰਟ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ",
+    voiceEnabledAI: "ਆਵਾਜ਼-ਸਮਰੱਥ ਏਆਈ ਸਹਾਇਕ",
+    voiceEnabledAIDesc: "ਆਵਾਜ਼ ਕਮਾਂਡਾਂ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ ਆਪਣੀ ਪਸੰਦੀਦਾ ਭਾਸ਼ਾ ਵਿੱਚ ਸਾਡੇ ਏਆਈ ਨਾਲ ਕੁਦਰਤੀ ਰੂਪ ਵਿੱਚ ਗੱਲਬਾਤ ਕਰੋ",
+    imageRecognition: "ਚਿੱਤਰ ਪਛਾਣ",
+    imageRecognitionDesc: "ਕੀੜਿਆਂ, ਬਿਮਾਰੀਆਂ ਅਤੇ ਪੋਸ਼ਕ ਤੱਤਾਂ ਦੀ ਤੁਰੰਤ ਪਛਾਣ ਲਈ ਫਸਲਾਂ ਦੀਆਂ ਤਸਵੀਰਾਂ ਅਪਲੋਡ ਕਰੋ",
+    locationBasedRec: "ਸਥਾਨ-ਅਧਾਰਿਤ ਸਿਫਾਰਸ਼ਾਂ",
+    locationBasedRecDesc: "ਆਪਣੀ ਸਥਾਨਕ ਮਿੱਟੀ ਦੇ ਪ੍ਰਕਾਰ ਅਤੇ ਜਲਵਾਯੂ ਦੀਆਂ ਸਥਿਤੀਆਂ ਦੇ ਆਧਾਰ ਤੇ ਵਿਅਕਤਿਗਤ ਸਲਾਹ ਪ੍ਰਾਪਤ ਕਰੋ",
+    
+    // Guidance Popup
+    guidanceVideoTitle: "ਵੈਬਸਾਈਟ ਦਾ ਮਾਰਗਦਰਸ਼ਨ ਵੀਡੀਓ ਹੋਵੇਗਾ",
   },
 };

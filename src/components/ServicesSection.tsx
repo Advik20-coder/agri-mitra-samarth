@@ -100,7 +100,7 @@ export const ServicesSection = () => {
               {t.services}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive agricultural solutions powered by AI to help farmers make informed decisions
+              {t.servicesDescription}
             </p>
           </div>
 
@@ -132,16 +132,16 @@ export const ServicesSection = () => {
                       {service.action === 'location' ? (
                         <>
                           <MapPin className="mr-2 h-4 w-4" />
-                          Get Location Info
+                          {t.getLocationInfo}
                         </>
                       ) : service.action === 'chat' ? (
                         <>
                           <MessageCircle className="mr-2 h-4 w-4" />
-                          Start Chat
+                          {t.startChat}
                         </>
                       ) : (
                         <>
-                          Learn More
+                          {t.learnMore}
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </>
                       )}
@@ -157,7 +157,7 @@ export const ServicesSection = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="text-2xl md:text-3xl font-bold mb-6">
-                  Smart Features for Modern Farming
+                  {t.smartFeaturesTitle}
                 </h3>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
@@ -165,9 +165,9 @@ export const ServicesSection = () => {
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">Voice-Enabled AI Assistant</h4>
+                      <h4 className="font-semibold mb-1">{t.voiceEnabledAI}</h4>
                       <p className="text-muted-foreground text-sm">
-                        Interact naturally with our AI in your preferred language using voice commands
+                        {t.voiceEnabledAIDesc}
                       </p>
                     </div>
                   </div>
@@ -176,9 +176,9 @@ export const ServicesSection = () => {
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">Image Recognition</h4>
+                      <h4 className="font-semibold mb-1">{t.imageRecognition}</h4>
                       <p className="text-muted-foreground text-sm">
-                        Upload photos of crops to instantly identify pests, diseases, and nutrients
+                        {t.imageRecognitionDesc}
                       </p>
                     </div>
                   </div>
@@ -187,9 +187,9 @@ export const ServicesSection = () => {
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">Location-Based Recommendations</h4>
+                      <h4 className="font-semibold mb-1">{t.locationBasedRec}</h4>
                       <p className="text-muted-foreground text-sm">
-                        Get personalized advice based on your local soil type and climate conditions
+                        {t.locationBasedRecDesc}
                       </p>
                     </div>
                   </div>
