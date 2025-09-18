@@ -356,23 +356,35 @@ export const FloatingChatbot = () => {
     }, 1000);
   };
 
-  const handleVoiceInput = () => {
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      toast.error("आपका ब्राउज़र वॉयस इनपुट सपोर्ट नहीं करता");
+  const handleVoiceInput = async () => {
+    if (!("webkitSpeechRecognition" in window) && !("SpeechRecognition" in window)) {
+      toast.error("आपका ब्राउज़र वॉयस इनपुट सपोर्ट नहीं करता। कृपया Chrome या Edge का उपयोग करें।");
       return;
     }
 
     if (isListening) {
-      recognitionRef.current?.stop();
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
       setIsListening(false);
       return;
     }
 
-    const SpeechRecognitionConstructor = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognitionConstructor();
+    try {
+      // Request microphone permission explicitly
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (error) {
+      toast.error("माइक्रोफोन की अनुमति आवश्यक है। कृपया माइक्रोफोन की अनुमति दें और फिर से कोशिश करें।");
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognitionRef.current = recognition;
+
     recognition.continuous = false;
     recognition.interimResults = false;
-    recognition.lang = 'hi-IN';
+    recognition.lang = "hi-IN"; // Hindi language
 
     recognition.onstart = () => {
       setIsListening(true);
@@ -380,22 +392,52 @@ export const FloatingChatbot = () => {
     };
 
     recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setInputValue(transcript);
-      setIsListening(false);
+      if (event.results.length > 0) {
+        const transcript = event.results[0][0].transcript;
+        setInputValue(transcript);
+        // Auto-send the message after voice input
+        setTimeout(() => {
+          if (transcript.trim()) {
+            const userMessage = transcript.trim();
+            addUserMessage(userMessage);
+            setIsLoading(true);
+            setTimeout(() => {
+              const botResponse = generateBotResponse(userMessage);
+              addBotMessage(botResponse);
+              setIsLoading(false);
+            }, 1000);
+          }
+        }, 100);
+      }
     };
 
-    recognition.onerror = () => {
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
       setIsListening(false);
-      toast.error("वॉयस इनपुट में त्रुटि हुई");
+      
+      let errorMessage = "वॉयस इनपुट में त्रुटि हुई। कृपया फिर से कोशिश करें।";
+      if (event.error === 'not-allowed') {
+        errorMessage = "माइक्रोफोन की अनुमति नहीं मिली। कृपया ब्राउज़र सेटिंग्स में माइक्रोफोन की अनुमति दें।";
+      } else if (event.error === 'no-speech') {
+        errorMessage = "कोई आवाज़ नहीं सुनी गई। कृपया दोबारा बोलने की कोशिश करें।";
+      } else if (event.error === 'network') {
+        errorMessage = "नेटवर्क त्रुटि। कृपया अपना इंटरनेट कनेक्शन जांचें।";
+      }
+      
+      toast.error(errorMessage);
     };
 
     recognition.onend = () => {
       setIsListening(false);
     };
 
-    recognitionRef.current = recognition;
-    recognition.start();
+    try {
+      recognition.start();
+    } catch (error) {
+      console.error("Failed to start speech recognition:", error);
+      setIsListening(false);
+      toast.error("वॉयस इनपुट शुरू नहीं हो सका। कृपया फिर से कोशिश करें।");
+    }
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

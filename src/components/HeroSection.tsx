@@ -57,7 +57,7 @@ export const HeroSection = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex justify-center items-center">
             <Button 
               size="lg" 
               className="bg-white text-primary hover:bg-white/90 shadow-lg text-lg px-8 py-6 rounded-full font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105"
@@ -65,15 +65,6 @@ export const HeroSection = () => {
             >
               {t.getStarted}
               <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm text-lg px-8 py-6 rounded-full font-semibold transition-all duration-300"
-            >
-              <Play className="mr-2 h-5 w-5" />
-              {t.learnMore}
             </Button>
           </div>
 

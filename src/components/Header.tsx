@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Sprout, Menu, X } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Sprout, Menu, X, LogOut, User } from "lucide-react";
+import { Link } from "react-router-dom";
 import farmersImage from "@/assets/farmers-working.jpg";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { t } = useLanguage();
+  const { user, signOut } = useAuth();
 
   const navigationItems = [
     { label: t.home, href: "#home" },
@@ -53,9 +56,29 @@ export const Header = () => {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
             <LanguageSelector />
-            <Button className="bg-gradient-primary hover:opacity-90 transition-opacity">
-              {t.getStarted}
-            </Button>
+            {user ? (
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <User className="h-4 w-4" />
+                  <span>{user.email}</span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => signOut()}
+                  className="flex items-center gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <Link to="/auth">
+                <Button className="bg-gradient-primary hover:opacity-90 transition-opacity">
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -85,9 +108,29 @@ export const Header = () => {
                   {item.label}
                 </a>
               ))}
-              <Button className="bg-gradient-primary hover:opacity-90 transition-opacity mt-2">
-                {t.getStarted}
-              </Button>
+              {user ? (
+                <div className="flex flex-col gap-2 mt-2">
+                  <div className="flex items-center gap-2 text-sm py-2">
+                    <User className="h-4 w-4" />
+                    <span>{user.email}</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => signOut()}
+                    className="flex items-center gap-2"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <Link to="/auth">
+                  <Button className="bg-gradient-primary hover:opacity-90 transition-opacity mt-2">
+                    Sign In
+                  </Button>
+                </Link>
+              )}
             </nav>
           </div>
         )}
