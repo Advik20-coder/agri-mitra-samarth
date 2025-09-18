@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { MessageCircle, X, Send, Mic, MicOff, Upload, MapPin } from "lucide-react";
+import { MessageCircle, X, Send, Mic, MicOff, Upload, MapPin, Languages } from "lucide-react";
 import { toast } from "sonner";
 
 // Type declarations for Web Speech API
@@ -134,6 +135,7 @@ export const FloatingChatbot = () => {
   const [inputValue, setInputValue] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [chatLanguage, setChatLanguage] = useState('hi');
   const { t } = useLanguage();
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -145,9 +147,14 @@ export const FloatingChatbot = () => {
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      addBotMessage("नमस्कार! 🌾 मैं आपका कृषि सलाहकार हूं। आप मुझसे मिट्टी, फसल, मौसम या खेती के बारे में कुछ भी पूछ सकते हैं। आप अपना स्थान भी बता सकते हैं ताकि मैं आपको स्थानीय मिट्टी की जानकारी दे सकूं।");
+      const welcomeMessages = {
+        hi: "नमस्कार! 🌾 मैं आपका कृषि सलाहकार हूं। आप मुझसे मिट्टी, फसल, मौसम या खेती के बारे में कुछ भी पूछ सकते हैं। आप अपना स्थान भी बता सकते हैं ताकि मैं आपको स्थानीय मिट्टी की जानकारी दे सकूं।",
+        en: "Hello! 🌾 I'm your agriculture advisor. You can ask me anything about soil, crops, weather, or farming. You can also tell me your location so I can provide local soil information.",
+        pa: "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! 🌾 ਮੈਂ ਤੁਹਾਡਾ ਖੇਤੀਬਾੜੀ ਸਲਾਹਕਾਰ ਹਾਂ। ਤੁਸੀਂ ਮਿੱਟੀ, ਫਸਲਾਂ, ਮੌਸਮ ਜਾਂ ਖੇਤੀਬਾੜੀ ਬਾਰੇ ਕੁਝ ਵੀ ਪੁੱਛ ਸਕਦੇ ਹੋ। ਤੁਸੀਂ ਆਪਣਾ ਸਥਾਨ ਵੀ ਦੱਸ ਸਕਦੇ ਹੋ ਤਾਂ ਜੋ ਮੈਂ ਤੁਹਾਨੂੰ ਸਥਾਨਕ ਮਿੱਟੀ ਦੀ ਜਾਣਕਾਰੀ ਦੇ ਸਕਾਂ।"
+      };
+      addBotMessage(welcomeMessages[chatLanguage as keyof typeof welcomeMessages]);
     }
-  }, [isOpen]);
+  }, [isOpen, chatLanguage]);
 
   const addBotMessage = (content: string) => {
     const newMessage: Message = {
@@ -198,146 +205,78 @@ export const FloatingChatbot = () => {
 
   const generateBotResponse = (userMessage: string): string => {
     const message = userMessage.toLowerCase();
+    
+    const responses = {
+      hi: {
+        schemes: {
+          punjab: "पंजाब सरकारी योजनाएं:\n• कृषि अवसंरचना फंड (AIF)\n• पंजाब ई-मंडी/ई-NAM\n• मिट्टी स्वास्थ्य कार्ड योजना\n• कृषि गृह सहायता योजना",
+          bihar: "बिहार सरकारी योजनाएं:\n• सिंचाई सब्सिडी (₹140 करोड़)\n• मुफ्त सोयाबीन बीज (₹4,000/एकड़)\n• सब्जी विकास (75% सब्सिडी)\n• पॉली हाउस सब्सिडी (50%)",
+          general: "पंजाब, यूपी, बिहार और एमपी के लिए सरकारी योजनाएं उपलब्ध हैं। कृपया अपना राज्य बताएं।"
+        },
+        soil: "🌱 **मिट्टी की जानकारी:**\n\nमिट्टी के मुख्य प्रकार:\n• **दोमट मिट्टी (Loamy)** - सबसे अच्छी खेती के लिए\n• **चिकनी मिट्टी (Clay)** - पानी रोकने में अच्छी\n• **रेतीली मिट्टी (Sandy)** - जल निकासी अच्छी\n\nकृपया अपना स्थान बताएं ताकि मैं आपको स्थानीय मिट्टी की विस्तृत जानकारी दे सकूं।",
+        crops: "🌾 **फसल की सिफारिशें:**\n\n**रबी फसलें (अक्टूबर-मार्च):**\n• गेहूं, जौ, चना, मसूर, सरसों\n\n**खरीफ फसलें (जून-सितम्बर):**\n• धान, मक्का, ज्वार, बाजरा, कपास\n\n**जायद फसलें (मार्च-जून):**\n• तरबूज, खरबूजा, खीरा, लौकी\n\nआपकी मिट्टी और क्षेत्र के अनुसार सटीक सुझाव के लिए कृपया अपना स्थान बताएं।",
+        default: "🤖 मैं आपकी मदद करना चाहता हूं! आप मुझसे पूछ सकते हैं:\n\n• 🌱 मिट्टी की जानकारी\n• 🌾 फसल की सिफारिशें\n• 🌤️ मौसम और खेती\n• 🧪 उर्वरक और खाद\n• 🐛 कीट-रोग नियंत्रण\n• 💰 बाजार की कीमतें\n\nकुछ और जानना चाहते हैं?"
+      },
+      en: {
+        schemes: {
+          punjab: "Punjab Government Schemes:\n• Agriculture Infrastructure Fund (AIF)\n• Punjab e-Mandi/e-NAM\n• Soil Health Card Scheme\n• Agriculture House Assistance Scheme",
+          bihar: "Bihar Government Schemes:\n• Irrigation Subsidy (₹140 crore)\n• Free Soybean Seeds (₹4,000/acre)\n• Vegetable Development (75% subsidy)\n• Polyhouse Subsidy (50%)",
+          general: "Government schemes available for Punjab, UP, Bihar, and MP. Please specify your state."
+        },
+        soil: "🌱 **Soil Information:**\n\nMain Soil Types:\n• **Loamy Soil** - Best for farming\n• **Clay Soil** - Good water retention\n• **Sandy Soil** - Good drainage\n\nPlease tell me your location so I can provide detailed local soil information.",
+        crops: "🌾 **Crop Recommendations:**\n\n**Rabi Crops (Oct-Mar):**\n• Wheat, Barley, Gram, Lentil, Mustard\n\n**Kharif Crops (Jun-Sep):**\n• Rice, Maize, Jowar, Bajra, Cotton\n\n**Zaid Crops (Mar-Jun):**\n• Watermelon, Muskmelon, Cucumber, Bottle gourd\n\nFor precise suggestions based on your soil and region, please tell me your location.",
+        default: "🤖 I'm here to help you! You can ask me about:\n\n• 🌱 Soil information\n• 🌾 Crop recommendations\n• 🌤️ Weather and farming\n• 🧪 Fertilizers and manure\n• 🐛 Pest and disease control\n• 💰 Market prices\n\nWhat would you like to know?"
+      },
+      pa: {
+        schemes: {
+          punjab: "ਪੰਜਾਬ ਸਰਕਾਰੀ ਯੋਜਨਾਵਾਂ:\n• ਖੇਤੀਬਾੜੀ ਬੁਨਿਆਦੀ ਢਾਂਚਾ ਫੰਡ (AIF)\n• ਪੰਜਾਬ ਈ-ਮੰਡੀ/ਈ-NAM\n• ਮਿੱਟੀ ਸਿਹਤ ਕਾਰਡ ਯੋਜਨਾ\n• ਖੇਤੀਬਾੜੀ ਘਰ ਸਹਾਇਤਾ ਯੋਜਨਾ",
+          bihar: "ਬਿਹਾਰ ਸਰਕਾਰੀ ਯੋਜਨਾਵਾਂ:\n• ਸਿੰਚਾਈ ਸਬਸਿਡੀ (₹140 ਕਰੋੜ)\n• ਮੁਫਤ ਸੋਇਆਬੀਨ ਬੀਜ (₹4,000/ਏਕੜ)\n• ਸਬਜ਼ੀ ਵਿਕਾਸ (75% ਸਬਸਿਡੀ)\n• ਪੌਲੀਹਾਊਸ ਸਬਸਿਡੀ (50%)",
+          general: "ਪੰਜਾਬ, ਯੂਪੀ, ਬਿਹਾਰ ਅਤੇ ਐਮਪੀ ਲਈ ਸਰਕਾਰੀ ਯੋਜਨਾਵਾਂ ਉਪਲਬਧ ਹਨ। ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਰਾਜ ਦੱਸੋ।"
+        },
+        soil: "🌱 **ਮਿੱਟੀ ਦੀ ਜਾਣਕਾਰੀ:**\n\nਮਿੱਟੀ ਦੇ ਮੁੱਖ ਕਿਸਮ:\n• **ਦੋਮਟ ਮਿੱਟੀ** - ਖੇਤੀਬਾੜੀ ਲਈ ਸਭ ਤੋਂ ਵਧੀਆ\n• **ਮਿੱਟੀ ਮਿੱਟੀ** - ਪਾਣੀ ਰੱਖਣ ਵਿੱਚ ਚੰਗੀ\n• **ਰੇਤਲੀ ਮਿੱਟੀ** - ਪਾਣੀ ਨਿਕਾਸ ਚੰਗੀ\n\nਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਸਥਾਨ ਦੱਸੋ ਤਾਂ ਜੋ ਮੈਂ ਤੁਹਾਨੂੰ ਸਥਾਨਕ ਮਿੱਟੀ ਦੀ ਵਿਸਥਾਰ ਜਾਣਕਾਰੀ ਦੇ ਸਕਾਂ।",
+        crops: "🌾 **ਫਸਲਾਂ ਦੀਆਂ ਸਿਫਾਰਸ਼ਾਂ:**\n\n**ਰਬੀ ਫਸਲਾਂ (ਅਕਤੂਬਰ-ਮਾਰਚ):**\n• ਕਣਕ, ਜੌਂ, ਚਨਾ, ਮਸੂਰ, ਸਰ੍ਹੋਂ\n\n**ਖਰੀਫ ਫਸਲਾਂ (ਜੂਨ-ਸਤੰਬਰ):**\n• ਝੋਨਾ, ਮੱਕੀ, ਜੁਆਰ, ਬਜਰਾ, ਕਪਾਹ\n\n**ਜਾਇਦ ਫਸਲਾਂ (ਮਾਰਚ-ਜੂਨ):**\n• ਤਰਬੂਜ਼, ਖਰਬੂਜ਼ਾ, ਖੀਰਾ, ਲੌਕੀ\n\nਤੁਹਾਡੀ ਮਿੱਟੀ ਅਤੇ ਖੇਤਰ ਅਨੁਸਾਰ ਸਹੀ ਸੁਝਾਵਾਂ ਲਈ ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਸਥਾਨ ਦੱਸੋ।",
+        default: "🤖 ਮੈਂ ਤੁਹਾਡੀ ਮਦਦ ਕਰਨਾ ਚਾਹੁੰਦਾ ਹਾਂ! ਤੁਸੀਂ ਮੈਨੂੰ ਪੁੱਛ ਸਕਦੇ ਹੋ:\n\n• 🌱 ਮਿੱਟੀ ਦੀ ਜਾਣਕਾਰੀ\n• 🌾 ਫਸਲਾਂ ਦੀਆਂ ਸਿਫਾਰਸ਼ਾਂ\n• 🌤️ ਮੌਸਮ ਅਤੇ ਖੇਤੀਬਾੜੀ\n• 🧪 ਖਾਦ ਅਤੇ ਉਰਵਰਕ\n• 🐛 ਕੀੜੇ ਅਤੇ ਰੋਗ ਨਿਯੰਤਰਣ\n• 💰 ਮੰਡੀ ਦੇ ਭਾਵ\n\nਕੀ ਜਾਣਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
+      }
+    };
 
     // Government schemes queries
-    if (message.includes('yojna') || message.includes('scheme') || message.includes('सरकारी') || message.includes('govt')) {
-      if (message.includes('punjab') || message.includes('पंजाब')) {
-        return "Punjab Government Schemes:\n• Agriculture Infrastructure Fund (AIF)\n• Punjab e-Mandi/e-NAM\n• Soil Health Card Scheme\n• Agriculture House Assistance";
+    if (message.includes('yojna') || message.includes('scheme') || message.includes('सरकारी') || message.includes('govt') || message.includes('ਯੋਜਨਾ') || message.includes('ਸਰਕਾਰੀ')) {
+      const langResponses = responses[chatLanguage as keyof typeof responses].schemes;
+      if (message.includes('punjab') || message.includes('पंजाब') || message.includes('ਪੰਜਾਬ')) {
+        return langResponses.punjab;
       }
-      if (message.includes('bihar') || message.includes('बिहार')) {
-        return "Bihar Government Schemes:\n• Irrigation Subsidy (₹140 crore)\n• Free Soybean Seeds (₹4,000/acre)\n• Vegetable Development (75% subsidy)\n• Polyhouse Subsidy (50%)";
+      if (message.includes('bihar') || message.includes('बिहार') || message.includes('ਬਿਹਾਰ')) {
+        return langResponses.bihar;
       }
-      return "Government schemes available for Punjab, UP, Bihar, and MP. Please specify your state.";
+      return langResponses.general;
     }
-    
+
     // Handle Hinglish queries
     const hinglishMessage = message.replace(/kya/g, 'क्या').replace(/hai/g, 'है').replace(/kaise/g, 'कैसे').replace(/farming/g, 'खेती').replace(/crop/g, 'फसल');
     
     // Location-based soil information
     const locationInfo = getLocationInfo(message) || getLocationInfo(hinglishMessage);
     if (locationInfo) {
-      return `📍 **${locationInfo.district}, ${locationInfo.state} की मिट्टी की जानकारी:**
-
-🌱 **मिट्टी का प्रकार:** ${locationInfo.soilType}
-
-📝 **विवरण:** ${locationInfo.soilDescription}
-
-🌾 **अनुशंसित फसलें:** ${locationInfo.recommendedCrops.join(', ')}
-
-💡 **सुझाव:** इस मिट्टी में खेती के लिए उचित जल निकासी और संतुलित उर्वरक का उपयोग करें।`;
+      const locationResponses = {
+        hi: `📍 **${locationInfo.district}, ${locationInfo.state} की मिट्टी की जानकारी:**\n\n🌱 **मिट्टी का प्रकार:** ${locationInfo.soilType}\n\n📝 **विवरण:** ${locationInfo.soilDescription}\n\n🌾 **अनुशंसित फसलें:** ${locationInfo.recommendedCrops.join(', ')}\n\n💡 **सुझाव:** इस मिट्टी में खेती के लिए उचित जल निकासी और संतुलित उर्वरक का उपयोग करें।`,
+        en: `📍 **Soil Information for ${locationInfo.district}, ${locationInfo.state}:**\n\n🌱 **Soil Type:** ${locationInfo.soilType}\n\n📝 **Description:** This soil type is suitable for various crops and has good fertility.\n\n🌾 **Recommended Crops:** ${locationInfo.recommendedCrops.join(', ')}\n\n💡 **Suggestion:** Use proper drainage and balanced fertilizers for farming in this soil.`,
+        pa: `📍 **${locationInfo.district}, ${locationInfo.state} ਦੀ ਮਿੱਟੀ ਦੀ ਜਾਣਕਾਰੀ:**\n\n🌱 **ਮਿੱਟੀ ਦਾ ਕਿਸਮ:** ${locationInfo.soilType}\n\n📝 **ਵੇਰਵਾ:** ਇਹ ਮਿੱਟੀ ਖੇਤੀਬਾੜੀ ਲਈ ਚੰਗੀ ਅਤੇ ਉਪਜਾਊ ਹੈ।\n\n🌾 **ਸਿਫਾਰਸ਼ੀ ਫਸਲਾਂ:** ${locationInfo.recommendedCrops.join(', ')}\n\n💡 **ਸੁਝਾਵ:** ਇਸ ਮਿੱਟੀ ਵਿੱਚ ਖੇਤੀਬਾੜੀ ਲਈ ਸਹੀ ਪਾਣੀ ਨਿਕਾਸ ਅਤੇ ਸੰਤੁਲਿਤ ਖਾਦ ਦਾ ਵਰਤੋਂ ਕਰੋ।`
+      };
+      return locationResponses[chatLanguage as keyof typeof locationResponses];
     }
 
     // Soil-related queries
-    if (message.includes('मिट्टी') || message.includes('soil') || message.includes('मिट्टी की जांच') || hinglishMessage.includes('mitti') || message.includes('mitti')) {
-      return `🌱 **मिट्टी की जानकारी:**
-
-मिट्टी के मुख्य प्रकार:
-• **दोमट मिट्टी (Loamy)** - सबसे अच्छी खेती के लिए
-• **चिकनी मिट्टी (Clay)** - पानी रोकने में अच्छी
-• **रेतीली मिट्टी (Sandy)** - जल निकासी अच्छी
-
-कृपया अपना स्थान बताएं ताकि मैं आपको स्थानीय मिट्टी की विस्तृत जानकारी दे सकूं।`;
+    if (message.includes('मिट्टी') || message.includes('soil') || message.includes('mitti') || message.includes('ਮਿੱਟੀ')) {
+      return responses[chatLanguage as keyof typeof responses].soil;
     }
 
     // Crop-related queries
-    if (message.includes('फसल') || message.includes('crop') || message.includes('खेती')) {
-      return `🌾 **फसल की सिफारिशें:**
-
-**रबी फसलें (अक्टूबर-मार्च):**
-• गेहूं, जौ, चना, मसूर, सरसों
-
-**खरीफ फसलें (जून-सितम्बर):**  
-• धान, मक्का, ज्वार, बाजरा, कपास
-
-**जायद फसलें (मार्च-जून):**
-• तरबूज, खरबूजा, खीरा, लौकी
-
-आपकी मिट्टी और क्षेत्र के अनुसार सटीक सुझाव के लिए कृपया अपना स्थान बताएं।`;
-    }
-
-    // Weather-related queries
-    if (message.includes('मौसम') || message.includes('weather') || message.includes('बारिश')) {
-      return `🌤️ **मौसम और खेती:**
-
-**मानसून से पहले:**
-• बीज और उर्वरक की तैयारी करें
-• खेत की जुताई और तैयारी करें
-
-**मानसून के दौरान:**
-• धान, मक्का, ज्वार की बुआई
-• जल निकासी का प्रबंध करें
-
-**सर्दी में:**
-• गेहूं, चना, सरसों की फसल
-• सिंचाई का उचित प्रबंध
-
-वर्तमान मौसम की स्थिति के लिए मौसम विभाग की जांच करें।`;
-    }
-
-    // Fertilizer queries
-    if (message.includes('खाद') || message.includes('उर्वरक') || message.includes('fertilizer')) {
-      return `🧪 **उर्वरक की जानकारी:**
-
-**मुख्य उर्वरक:**
-• **यूरिया (N)** - पत्तियों की वृद्धि के लिए
-• **DAP (P)** - जड़ों की मजबूती के लिए  
-• **MOP (K)** - फल-फूल के लिए
-
-**जैविक खाद:**
-• गोबर की खाद, कम्पोस्ट
-• हरी खाद, केंचुआ खाद
-
-**उपयोग:** मिट्टी जांच के बाद ही उर्वरक का उपयोग करें।`;
-    }
-
-    // Pest/disease queries
-    if (message.includes('कीट') || message.includes('रोग') || message.includes('pest') || message.includes('disease')) {
-      return `🐛 **कीट और रोग प्रबंधन:**
-
-**मुख्य कीट:**
-• एफिड, माईट, कैटरपिलर
-• सफेद मक्खी, थ्रिप्स
-
-**रोग:**
-• फंगल रोग, बैक्टीरियल रोग
-• वायरल रोग
-
-**प्राकृतिक नियंत्रण:**
-• नीम का तेल, साबुन का छिड़काव
-• जैविक कीटनाशक का उपयोग
-
-📸 आप फसल की तस्वीर भी अपलोड कर सकते हैं पहचान के लिए।`;
-    }
-
-    // Market price queries  
-    if (message.includes('भाव') || message.includes('कीमत') || message.includes('price') || message.includes('market')) {
-      return `💰 **बाजार भाव की जानकारी:**
-
-**वर्तमान दरें (अनुमानित):**
-• गेहूं: ₹2000-2200/क्विंटल
-• धान: ₹1800-2000/क्विंटल
-• चना: ₹4500-5000/क्विंटल
-• सरसों: ₹4000-4500/क्विंटल
-
-**सुझाव:**
-• स्थानीय मंडी की दरें जांचें
-• न्यूनतम समर्थन मूल्य (MSP) देखें
-• बिक्री का सही समय चुनें
-
-📱 eNAM ऐप से नवीनतम भाव देखें।`;
+    if (message.includes('फसल') || message.includes('crop') || message.includes('खेती') || message.includes('ਫਸਲ') || message.includes('ਖੇਤੀ')) {
+      return responses[chatLanguage as keyof typeof responses].crops;
     }
 
     // Default response
-    return `🤖 मैं आपकी मदद करना चाहता हूं! आप मुझसे पूछ सकते हैं:
-
-• 🌱 मिट्टी की जानकारी (अपना स्थान बताएं)
-• 🌾 फसल की सिफारिशें
-• 🌤️ मौसम और खेती
-• 🧪 उर्वरक और खाद
-• 🐛 कीट-रोग नियंत्रण
-• 💰 बाजार की कीमतें
-
-कुछ और जानना चाहते हैं?`;
+    return responses[chatLanguage as keyof typeof responses].default;
   };
 
   const handleSendMessage = async () => {
@@ -384,7 +323,12 @@ export const FloatingChatbot = () => {
 
     recognition.continuous = false;
     recognition.interimResults = false;
-    recognition.lang = "hi-IN"; // Hindi language
+    const languageMap = {
+      'hi': 'hi-IN',
+      'en': 'en-US', 
+      'pa': 'pa-IN'
+    };
+    recognition.lang = languageMap[chatLanguage as keyof typeof languageMap] || 'hi-IN';
 
     recognition.onstart = () => {
       setIsListening(true);
@@ -495,7 +439,30 @@ export const FloatingChatbot = () => {
         </Button>
       </CardHeader>
       
-      <CardContent className="p-0 flex flex-col h-[calc(100%-80px)]">
+      {/* Language Selector */}
+      <div className="px-4 py-2 bg-card border-b border-border/20">
+        <div className="flex items-center gap-2">
+          <Languages className="h-4 w-4 text-muted-foreground" />
+          <Select value={chatLanguage} onValueChange={setChatLanguage}>
+            <SelectTrigger className="w-full bg-background border border-input shadow-sm z-50">
+              <SelectValue placeholder="Select Language" />
+            </SelectTrigger>
+            <SelectContent className="bg-background border border-input shadow-lg z-[60]">
+              <SelectItem value="hi" className="cursor-pointer hover:bg-accent">
+                हिंदी (Hindi)
+              </SelectItem>
+              <SelectItem value="en" className="cursor-pointer hover:bg-accent">
+                English
+              </SelectItem>
+              <SelectItem value="pa" className="cursor-pointer hover:bg-accent">
+                ਪੰਜਾਬੀ (Punjabi)
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      
+      <CardContent className="p-0 flex flex-col h-[calc(100%-120px)]">
         <ScrollArea className="flex-1 p-4">
           <div className="space-y-4">
             {messages.map((message) => (
