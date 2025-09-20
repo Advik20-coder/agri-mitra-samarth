@@ -152,12 +152,12 @@ export const ServicesSection = () => {
             })}
           </div>
 
-          {/* Features showcase */}
+          {/* Government Benefits showcase */}
           <div className="mt-20 bg-gradient-card rounded-2xl p-8 md:p-12 shadow-soft">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="text-2xl md:text-3xl font-bold mb-6">
-                  {t.smartFeaturesTitle}
+                  Government Support for Farmers
                 </h3>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
@@ -165,9 +165,9 @@ export const ServicesSection = () => {
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">{t.voiceEnabledAI}</h4>
+                      <h4 className="font-semibold mb-1">{t.govSubsidyTitle}</h4>
                       <p className="text-muted-foreground text-sm">
-                        {t.voiceEnabledAIDesc}
+                        {t.govSubsidyDesc}
                       </p>
                     </div>
                   </div>
@@ -176,9 +176,9 @@ export const ServicesSection = () => {
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">{t.imageRecognition}</h4>
+                      <h4 className="font-semibold mb-1">{t.cropInsuranceTitle}</h4>
                       <p className="text-muted-foreground text-sm">
-                        {t.imageRecognitionDesc}
+                        {t.cropInsuranceDesc}
                       </p>
                     </div>
                   </div>
@@ -187,9 +187,9 @@ export const ServicesSection = () => {
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">{t.locationBasedRec}</h4>
+                      <h4 className="font-semibold mb-1">Real-Time Updates</h4>
                       <p className="text-muted-foreground text-sm">
-                        {t.locationBasedRecDesc}
+                        Get latest information on scheme eligibility, application deadlines, and claim status
                       </p>
                     </div>
                   </div>
@@ -197,10 +197,10 @@ export const ServicesSection = () => {
               </div>
               <div className="relative">
                 <div className="w-full h-64 bg-gradient-primary rounded-lg flex items-center justify-center">
-                  <MessageCircle className="h-24 w-24 text-white opacity-50" />
+                  <TrendingUp className="h-24 w-24 text-white opacity-50" />
                 </div>
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-r from-harvest-yellow to-amber-500 rounded-full flex items-center justify-center shadow-lg">
-                  <Bot className="h-12 w-12 text-white" />
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
+                  <Calendar className="h-12 w-12 text-white" />
                 </div>
               </div>
             </div>

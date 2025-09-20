@@ -53,13 +53,10 @@ export interface Translation {
   
   // Services Section
   servicesDescription: string;
-  smartFeaturesTitle: string;
-  voiceEnabledAI: string;
-  voiceEnabledAIDesc: string;
-  imageRecognition: string;
-  imageRecognitionDesc: string;
-  locationBasedRec: string;
-  locationBasedRecDesc: string;
+  govSubsidyTitle: string;
+  govSubsidyDesc: string;
+  cropInsuranceTitle: string;
+  cropInsuranceDesc: string;
   
   // Guidance Popup
   guidanceVideoTitle: string;
@@ -121,13 +118,10 @@ export const translations: Record<string, Translation> = {
     
     // Services Section
     servicesDescription: "Comprehensive agricultural solutions powered by AI to help farmers make informed decisions",
-    smartFeaturesTitle: "Smart Features for Modern Farming",
-    voiceEnabledAI: "Voice-Enabled AI Assistant",
-    voiceEnabledAIDesc: "Interact naturally with our AI in your preferred language using voice commands",
-    imageRecognition: "Image Recognition",
-    imageRecognitionDesc: "Upload photos of crops to instantly identify pests, diseases, and nutrients",
-    locationBasedRec: "Location-Based Recommendations",
-    locationBasedRecDesc: "Get personalized advice based on your local soil type and climate conditions",
+    govSubsidyTitle: "Government Subsidies & Schemes",
+    govSubsidyDesc: "Access real-time information about government agricultural schemes, subsidies, and financial assistance programs",
+    cropInsuranceTitle: "Crop Insurance Information",
+    cropInsuranceDesc: "Get detailed information about crop insurance policies, coverage, and claim procedures for risk management",
     
     // Guidance Popup
     guidanceVideoTitle: "There will be a guidance video of website",
@@ -188,13 +182,10 @@ export const translations: Record<string, Translation> = {
     
     // Services Section
     servicesDescription: "एआई द्वारा संचालित व्यापक कृषि समाधान जो किसानों को सूचित निर्णय लेने में मदद करते हैं",
-    smartFeaturesTitle: "आधुनिक खेती के लिए स्मार्ट सुविधाएं",
-    voiceEnabledAI: "वॉयस-सक्षम एआई सहायक",
-    voiceEnabledAIDesc: "वॉयस कमांड का उपयोग करके अपनी पसंदीदा भाषा में हमारे एआई के साथ प्राकृतिक रूप से बातचीत करें",
-    imageRecognition: "छवि पहचान",
-    imageRecognitionDesc: "कीटों, बीमारियों और पोषक तत्वों की तुरंत पहचान के लिए फसलों की तस्वीरें अपलोड करें",
-    locationBasedRec: "स्थान-आधारित सिफारिशें",
-    locationBasedRecDesc: "अपनी स्थानीय मिट्टी के प्रकार और जलवायु की स्थिति के आधार पर व्यक्तिगत सलाह प्राप्त करें",
+    govSubsidyTitle: "सरकारी सब्सिडी और योजनाएं",
+    govSubsidyDesc: "सरकारी कृषि योजनाओं, सब्सिडी और वित्तीय सहायता कार्यक्रमों के बारे में वास्तविक समय की जानकारी प्राप्त करें",
+    cropInsuranceTitle: "फसल बीमा जानकारी",
+    cropInsuranceDesc: "जोखिम प्रबंधन के लिए फसल बीमा नीतियों, कवरेज और दावा प्रक्रियाओं के बारे में विस्तृत जानकारी प्राप्त करें",
     
     // Guidance Popup
     guidanceVideoTitle: "वेबसाइट का मार्गदर्शन वीडियो होगा",
@@ -255,13 +246,10 @@ export const translations: Record<string, Translation> = {
     
     // Services Section
     servicesDescription: "ਏਆਈ ਦੁਆਰਾ ਸੰਚਾਲਿਤ ਵਿਆਪਕ ਖੇਤੀਬਾੜੀ ਹੱਲ ਜੋ ਕਿਸਾਨਾਂ ਨੂੰ ਸੂਚਿਤ ਫੈਸਲੇ ਲੈਣ ਵਿੱਚ ਮਦਦ ਕਰਦੇ ਹਨ",
-    smartFeaturesTitle: "ਆਧੁਨਿਕ ਖੇਤੀ ਲਈ ਸਮਾਰਟ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ",
-    voiceEnabledAI: "ਆਵਾਜ਼-ਸਮਰੱਥ ਏਆਈ ਸਹਾਇਕ",
-    voiceEnabledAIDesc: "ਆਵਾਜ਼ ਕਮਾਂਡਾਂ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ ਆਪਣੀ ਪਸੰਦੀਦਾ ਭਾਸ਼ਾ ਵਿੱਚ ਸਾਡੇ ਏਆਈ ਨਾਲ ਕੁਦਰਤੀ ਰੂਪ ਵਿੱਚ ਗੱਲਬਾਤ ਕਰੋ",
-    imageRecognition: "ਚਿੱਤਰ ਪਛਾਣ",
-    imageRecognitionDesc: "ਕੀੜਿਆਂ, ਬਿਮਾਰੀਆਂ ਅਤੇ ਪੋਸ਼ਕ ਤੱਤਾਂ ਦੀ ਤੁਰੰਤ ਪਛਾਣ ਲਈ ਫਸਲਾਂ ਦੀਆਂ ਤਸਵੀਰਾਂ ਅਪਲੋਡ ਕਰੋ",
-    locationBasedRec: "ਸਥਾਨ-ਅਧਾਰਿਤ ਸਿਫਾਰਸ਼ਾਂ",
-    locationBasedRecDesc: "ਆਪਣੀ ਸਥਾਨਕ ਮਿੱਟੀ ਦੇ ਪ੍ਰਕਾਰ ਅਤੇ ਜਲਵਾਯੂ ਦੀਆਂ ਸਥਿਤੀਆਂ ਦੇ ਆਧਾਰ ਤੇ ਵਿਅਕਤਿਗਤ ਸਲਾਹ ਪ੍ਰਾਪਤ ਕਰੋ",
+    govSubsidyTitle: "ਸਰਕਾਰੀ ਸਬਸਿਡੀ ਅਤੇ ਯੋਜਨਾਵਾਂ",
+    govSubsidyDesc: "ਸਰਕਾਰੀ ਖੇਤੀਬਾੜੀ ਯੋਜਨਾਵਾਂ, ਸਬਸਿਡੀ ਅਤੇ ਵਿੱਤੀ ਸਹਾਇਤਾ ਪ੍ਰੋਗਰਾਮਾਂ ਬਾਰੇ ਅਸਲ ਸਮੇਂ ਦੀ ਜਾਣਕਾਰੀ ਪ੍ਰਾਪਤ ਕਰੋ",
+    cropInsuranceTitle: "ਫਸਲ ਬੀਮਾ ਜਾਣਕਾਰੀ",
+    cropInsuranceDesc: "ਜੋਖਿਮ ਪ੍ਰਬੰਧਨ ਲਈ ਫਸਲ ਬੀਮਾ ਨੀਤੀਆਂ, ਕਵਰੇਜ ਅਤੇ ਦਾਅਵਾ ਪ੍ਰਕਿਰਿਆਵਾਂ ਬਾਰੇ ਵਿਸਤ੍ਰਿਤ ਜਾਣਕਾਰੀ ਪ੍ਰਾਪਤ ਕਰੋ",
     
     // Guidance Popup
     guidanceVideoTitle: "ਵੈਬਸਾਈਟ ਦਾ ਮਾਰਗਦਰਸ਼ਨ ਵੀਡੀਓ ਹੋਵੇਗਾ",

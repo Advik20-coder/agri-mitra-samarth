@@ -34,16 +34,43 @@ export const Auth = ({ onClose }: AuthProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      // Validate email format
+      if (!validateEmail(email)) {
+        toast({
+          title: "Invalid Email",
+          description: "Please enter a valid email address",
+          variant: "destructive"
+        });
+        setLoading(false);
+        return;
+      }
+
+      // Validate password length
+      if (password.length < 6) {
+        toast({
+          title: "Password Too Short",
+          description: "Password must be at least 6 characters long",
+          variant: "destructive"
+        });
+        setLoading(false);
+        return;
+      }
+
       if (isSignUp) {
         if (!firstName || !lastName || !state || !district) {
           toast({
-            title: "Error",
-            description: "Please fill in all fields",
+            title: "Missing Information",
+            description: "Please fill in all required fields",
             variant: "destructive"
           });
           setLoading(false);
@@ -58,15 +85,24 @@ export const Auth = ({ onClose }: AuthProps) => {
         });
 
         if (error) {
+          let errorMessage = error.message;
+          if (error.message.includes("User already registered")) {
+            errorMessage = "An account with this email already exists. Please try signing in instead.";
+          } else if (error.message.includes("Invalid email")) {
+            errorMessage = "Please enter a valid email address.";
+          } else if (error.message.includes("Password")) {
+            errorMessage = "Password must be at least 6 characters long.";
+          }
+          
           toast({
-            title: "Signup Error",
-            description: error.message,
+            title: "Signup Failed",
+            description: errorMessage,
             variant: "destructive"
           });
         } else {
           toast({
-            title: "Success",
-            description: "Account created successfully! Please check your email.",
+            title: "Account Created Successfully!",
+            description: "Please check your email to verify your account.",
           });
           onClose?.();
         }
@@ -74,15 +110,22 @@ export const Auth = ({ onClose }: AuthProps) => {
         const { error } = await signIn(email, password);
         
         if (error) {
+          let errorMessage = error.message;
+          if (error.message.includes("Invalid login credentials")) {
+            errorMessage = "Invalid email or password. Please check your credentials and try again.";
+          } else if (error.message.includes("Email not confirmed")) {
+            errorMessage = "Please check your email and click the confirmation link before signing in.";
+          }
+          
           toast({
-            title: "Login Error",
-            description: error.message,
+            title: "Login Failed",
+            description: errorMessage,
             variant: "destructive"
           });
         } else {
           toast({
-            title: "Success",
-            description: "Logged in successfully!",
+            title: "Welcome Back!",
+            description: "You have been logged in successfully.",
           });
           onClose?.();
         }
@@ -90,8 +133,8 @@ export const Auth = ({ onClose }: AuthProps) => {
     } catch (error) {
       console.error('Auth error:', error);
       toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
+        title: "Connection Error",
+        description: "Unable to connect to the server. Please check your internet connection and try again.",
         variant: "destructive"
       });
     }
